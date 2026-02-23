@@ -174,6 +174,49 @@ General guidance
 - For language ecosystems that support multiple registries, restrict installs to approved registries via config (npmrc, pip index-url, nuget.config).
 - CI should validate lockfile integrity (e.g., run `npm ci`, `pip install -r`, `go mod download`) and fail early on mismatches.
 
+Package manager details
+
+Python (pip / pip-tools / poetry)
+
+- Recommended tools:
+  - pip for installs, pip-tools (`pip-compile`) for deterministic `requirements.txt` generation, or Poetry for modern dependency management and lockfiles.
+- Typical commands:
+  - Create venv and install: `python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
+  - Using pip-tools: `pip-compile pyproject.toml` or `pip-compile requirements.in` then `pip-sync` in CI agents if desired.
+  - Using Poetry: `poetry install --no-interaction --no-ansi` in CI; `poetry lock` to update lockfile locally.
+- Private indexes and credentials:
+  - Configure private indices via `pip.conf` or `--index-url`; use tokenized credentials stored in CI secrets (do not commit credentials).
+- Lockfile strategy:
+  - Commit `requirements.txt` (from pip-compile) or `poetry.lock` for reproducible installs; prefer `pip-compile` for complex dependency resolution transparency.
+
+.NET / NuGet
+
+- Recommended tools:
+  - dotnet CLI (`dotnet restore`, `dotnet build`, `dotnet test`) and nuget configuration files (`nuget.config`) for feeds.
+- Typical commands:
+  - Restore & build: `dotnet restore && dotnet build --no-restore`
+  - Restore in locked mode: enable `RestoreLockedMode` or use `dotnet restore --use-lock-file` when using lockfiles.
+- Lockfiles & reproducibility:
+  - Use `packages.lock.json` to lock package versions for apps. Use `dotnet restore --locked-mode` in CI to ensure lockfile consistency.
+- Private feeds:
+  - Configure `nuget.config` with feed URLs and use CI secrets or service principals for authentication. Avoid committing credentials.
+- Auditing packages:
+  - Use `dotnet list package --vulnerable` or third-party scanners (Snyk, WhiteSource) and integrate into CI.
+
+DoneJS / npm (DoneJS is Node-based)
+
+- Recommended tools:
+  - npm (or yarn/pnpm depending on project) as the package manager; DoneJS projects typically use `npm` commands.
+- Typical commands:
+  - Install CI deps: `npm ci` (uses package-lock.json) for reproducible installs.
+  - Local install: `npm install` for development.
+- Lockfiles & engines:
+  - Commit `package-lock.json` (or `yarn.lock`/`pnpm-lock.yaml`) and pin Node versions via `.nvmrc` or the `engines` field in `package.json`.
+- Private registries:
+  - Configure `.npmrc` to point to private registries and use CI secrets for auth tokens; avoid committing tokens.
+- Native modules / build tooling:
+  - For native addons, ensure CI runners include platform build tools or use prebuilt binaries where feasible.
+
 Notes
 - These are recommended conventions — adapt schedules and SLAs to match organizational risk appetite.
 - Ensure that credentials and secret materials are never included in SBOMs or published artifacts.
