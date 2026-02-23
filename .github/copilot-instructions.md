@@ -12,14 +12,16 @@ Security/
   - Prefer secure defaults in suggestions (parameterized queries, safe deserialization, input validation).
   - If no security files exist, prompt the user before adding secrets or automatic fixes that would change security posture.
 
-Build-Test-Lint/
-- Purpose: canonical commands and examples for building, running tests (including single-test invocation), and linting.
+Testing/
+- Purpose: canonical testing commands, single-test invocation examples, and testing standards for the repository.
 - What to include:
-  - Exact commands to run the full suite and a single test (e.g., `npm test`, `python -m pytest`, `go test ./pkg -run TestName`).
-  - Lint and formatter commands (e.g., `npm run lint`, `ruff .`, `gofmt -w`).
-  - Optional Makefile or top-level scripts to standardize invocations.
+  - Exact commands to run the full test suite and a single test per supported language/framework (Node, Python, Go, Rust, .NET, DoneJS, UI/E2E).
+  - Guidance on test types (unit, integration, UI/e2e), test fixtures, handling flakiness, coverage collection, and parallelization.
+  - CI best-practices and example job snippets to run tests reliably.
 - How Copilot should use this folder:
-  - Always check here first for authoritative commands before proposing run instructions or CI changes.
+  - Consult Testing/ first for authoritative test run commands, single-test examples, and CI practices before proposing run instructions or CI changes.
+  - Prefer existing test scripts (npm script, tox, Makefile, task) and respect project-specific concurrency and environment setup.
+  - When suggesting test commands, include exact single-test invocations and any required environment variables or fixtures.
 
 Architecture/
 - Purpose: high-level overview describing core components, runtime layout, and data flow.

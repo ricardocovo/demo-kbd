@@ -6,7 +6,7 @@ This repository is a minimal demo augmented with a comprehensive set of reposito
 
 Docs (primary):
 - security/ — General security, API security, AuthN/AuthZ, FSI guidance, secrets, incident response, supply chain
-- build-test-lint/ — Build, test, and lint commands (including single-test examples) and testing standards
+- testing/ — Testing commands and standards (single-test examples, frameworks, and CI guidance)
 - architecture/ — High-level software and cloud architecture, microservices, websockets, DBs, caching
 - conventions/ — Framework-specific coding conventions (.NET, Python, Node.js, HTML/CSS)
 - deployment/ — Deployment and release pipeline guidance
